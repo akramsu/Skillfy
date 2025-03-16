@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skillfy - البحث عن وظائف لينكدإن</title>
+    <link rel="stylesheet" href="../styles/home.css">
+    <style>
+        /* Additional styles specific to the LinkedIn Jobs page */
+        .linkedin-jobs-section {
+            padding: 60px 0;
+            background-color: #f8f9fa;
+        }
+        
+        .linkedin-jobs-card {
+            display: flex;
+            background-color: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .linkedin-jobs-content {
+            padding: 40px;
+            flex: 1;
+        }
+        
+        .linkedin-jobs-image {
+            flex: 1;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            background-color: #f0f2f5;
+        }
+        
+        .linkedin-jobs-image img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        
+        .linkedin-jobs-title {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .linkedin-jobs-description {
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .search-btn {
+            background-color: #0077b5; /* LinkedIn blue */
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .search-btn:hover {
+            background-color: #006097;
+            transform: translateY(-2px);
+        }
+        
+        .features-list {
+            margin: 30px 0;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .feature-icon-small {
+            width: 24px;
+            height: 24px;
+            margin-left: 15px;
+            color: #0077b5;
+        }
+        
+        .feature-text {
+            font-size: 16px;
+            color: #555;
+        }
+        
+        .job-search-form {
+            margin-top: 30px;
+            background-color: #f8f9fa;
+            padding: 25px;
+            border-radius: 8px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .job-results {
+            margin-top: 20px;
+            width: 100%;
+        }
+        
+        .job-card {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .job-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .job-title {
+            font-size: 18px;
+            color: #0077b5;
+            margin-bottom: 8px;
+        }
+        
+        .job-company {
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        
+        .job-location {
+            color: #666;
+            margin-bottom: 12px;
+        }
+        
+        .job-description {
+            color: #555;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .job-link {
+            display: inline-block;
+            color: #0077b5;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        
+        .job-link:hover {
+            text-decoration: underline;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .pagination-button {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            color: #0077b5;
+            padding: 8px 12px;
+            margin: 0 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .pagination-button:hover {
+            background-color: #f0f2f5;
+        }
+        
+        .pagination-button.active {
+            background-color: #0077b5;
+            color: #fff;
+            border-color: #0077b5;
+        }
+        
+        .pagination-button.disabled {
+            color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .results-title {
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+        
+        /* Job Details Modal Styles */
+        .job-details-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .modal-content {
+            background-color: #fff;
+            margin: 50px auto;
+            padding: 30px;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            position: relative;
+            direction: rtl;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            color: #666;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: #0077b5;
+        }
+        
+        .job-details-header {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+        }
+        
+        .job-details-title {
+            font-size: 24px;
+            color: #0077b5;
+            margin-bottom: 10px;
+        }
+        
+        .job-details-company {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        
+        .job-details-location {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .job-details-section {
+            margin-bottom: 25px;
+        }
+        
+        .job-details-section h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .job-details-description {
+            line-height: 1.6;
+            color: #444;
+        }
+        
+        .job-requirements-list {
+            padding-right: 20px;
+        }
+        
+        .job-requirements-list li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        .apply-button {
+            background-color: #0077b5;
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .apply-button:hover {
+            background-color: #005fa3;
+        }
+        
+        @media (max-width: 768px) {
+            .linkedin-jobs-card {
+                flex-direction: column;
+            }
+            
+            .linkedin-jobs-image {
+                min-height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="container nav-container">
+            <a href="../index.html" class="logo">
+                <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                </svg>
+                <span>Skillfy</span>
+            </a>
+            
+            <div class="nav-links">
+                <a href="home.html" class="nav-link">الرئيسية</a>
+                <a href="#" class="nav-link active">الوظائف</a>
+                <a href="#" class="nav-link">من نحن</a>
+                <a href="contact.html" class="nav-link">اتصل بنا</a>
+            </div>
+            
+            <button class="logout-btn" onclick="window.location.href = '../index.html';">تسجيل الخروج</button>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="container hero-container">
+            <img 
+                src="../assets/images/linkedin-jobs.jpg"
+                alt="LinkedIn Job Search" 
+                class="hero-image"
+            >
+            <div class="hero-content">
+                <h1 class="hero-title">البحث عن وظائف على لينكدإن</h1>
+                <p class="hero-description">
+                    استخدم أداة البحث المتقدمة للعثور على أفضل الفرص الوظيفية على منصة لينكدإن. ابحث عن وظائف تناسب مهاراتك وخبراتك واحصل على معلومات مفصلة عن الشركات وفرص العمل.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="linkedin-jobs-section">
+        <div class="container">
+            <div class="linkedin-jobs-card">
+                <div class="linkedin-jobs-content">
+                    <h2 class="linkedin-jobs-title">ابحث عن وظائف على لينكدإن</h2>
+                    <p class="linkedin-jobs-description">
+                        استخدم محرك البحث المتقدم للعثور على أفضل الفرص الوظيفية على منصة لينكدإن. يمكنك تخصيص البحث حسب المسمى الوظيفي، الموقع، ونوع الوظيفة للعثور على الوظائف التي تناسب احتياجاتك.
+                    </p>
+                    
+                    <div class="features-list">
+                        <div class="feature-item">
+                            <svg class="feature-icon-small" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                            <span class="feature-text">بحث متقدم عن الوظائف</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg class="feature-icon-small" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                            <span class="feature-text">تصفية النتائج حسب المعايير المختلفة</span>
+                        </div>
+                        <div class="feature-item">
+                            <svg class="feature-icon-small" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                            <span class="feature-text">معلومات مفصلة عن الوظائف والشركات</span>
+                        </div>
+                    </div>
+                    
+                    <div class="job-search-form">
+                        <h3>ابحث عن وظائف على لينكدإن</h3>
+                        <form id="linkedinJobsForm">
+                            <div class="form-group">
+                                <label for="jobTitle">المسمى الوظيفي</label>
+                                <input type="text" id="jobTitle" name="jobTitle" placeholder="مثال: مطور ويب، مهندس برمجيات، محلل بيانات" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="jobLocation">الموقع</label>
+                                <input type="text" id="jobLocation" name="jobLocation" placeholder="مثال: الرياض، دبي، القاهرة، عن بعد">
+                            </div>
+                            <div class="form-group">
+                                <label for="jobType">نوع الوظيفة</label>
+                                <select id="jobType" name="jobType">
+                                    <option value="">جميع الأنواع</option>
+                                    <option value="دوام كامل">دوام كامل</option>
+                                    <option value="دوام جزئي">دوام جزئي</option>
+                                    <option value="عن بعد">عن بعد</option>
+                                    <option value="تدريب">تدريب</option>
+                                    <option value="تعاقد">تعاقد</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="experienceLevel">مستوى الخبرة</label>
+                                <select id="experienceLevel" name="experienceLevel">
+                                    <option value="">جميع المستويات</option>
+                                    <option value="entry">مبتدئ (1-2 سنوات)</option>
+                                    <option value="mid">متوسط (3-5 سنوات)</option>
+                                    <option value="senior">خبير (5+ سنوات)</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="search-btn">بحث</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="linkedin-jobs-image">
+                    <img src="../assets/images/linkedin-search.png" alt="LinkedIn Job Search" />
+                    <div id="jobsContainer" class="job-results">
+                        <h3 class="results-title">نتائج البحث</h3>
+                        <div class="no-jobs-found">
+                            <h3>لا توجد وظائف تطابق معايير البحث. يرجى تعديل معايير البحث والمحاولة مرة أخرى.</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <h2 class="features-title">مميزات البحث عن وظائف لينكدإن</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <h3 class="feature-title">بحث متقدم</h3>
+                </div>
+
+                <div class="feature-card">
+                    <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    <h3 class="feature-title">تصفية حسب الموقع</h3>
+                </div>
+
+                <div class="feature-card">
+                    <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                    </svg>
+                    <h3 class="feature-title">معلومات الشركات</h3>
+                </div>
+
+                <div class="feature-card">
+                    <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                    <h3 class="feature-title">تحليل المتطلبات الوظيفية</h3>
+                </div>
+
+                <div class="feature-card">
+                    <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <path d="M14 2v6h6"></path>
+                        <path d="M16 13H8"></path>
+                        <path d="M16 17H8"></path>
+                        <path d="M10 9H8"></path>
+                    </svg>
+                    <h3 class="feature-title">تقارير وإحصائيات</h3>
+                </div>
+
+                <div class="feature-card">
+                    <svg class="feature-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                    </svg>
+                    <h3 class="feature-title">توصيات مخصصة</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <a class="logo">
+                    <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                    </svg>
+                    <span>Skillfy</span>
+                </a>
+                <p>تستخدم Skillfy تقنيات الذكاء الاصطناعي المتقدمة لمساعدة المهنيين على تحديد المهارات المطلوبة، وتحسين سيرهم الذاتية، وتسريع نمو حياتهم المهنية.</p>
+            </div>
+            
+            <div class="footer-column">
+                <h3>الشركة</h3>
+                <ul>
+                    <li><a href="#">من نحن</a></li>
+                    <li><a href="#">فريقنا</a></li>
+                    <li><a href="#">شركاؤنا</a></li>
+                    <li><a href="#">للمرشحين</a></li>
+                    <li><a href="#">لأصحاب العمل</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>موارد المهنة</h3>
+                <ul>
+                    <li><a href="#">مكتبة المهارات</a></li>
+                    <li><a href="#">مسارات التعلم</a></li>
+                    <li><a href="#">قوالب السيرة الذاتية</a></li>
+                    <li><a href="#">أدلة المقابلات</a></li>
+                    <li><a href="#">معلومات الرواتب</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-newsletter">
+                <h3>النشرة الإخبارية</h3>
+                <p>ابق على اطلاع بأحدث اتجاهات سوق العمل ومتطلبات المهارات في مجال عملك</p>
+                <div class="form">
+                    <input type="email" placeholder="البريد الإلكتروني">
+                    <button type="submit">اشترك</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p> 2025 Skillfy. جميع الحقوق محفوظة.</p>
+            <div class="footer-links">
+                <a href="#">سياسة الخصوصية</a>
+                <a href="#">شروط الاستخدام</a>
+                <a href="#">سياسة ملفات تعريف الارتباط</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Job Details Modal -->
+    <div id="jobDetailsModal" class="job-details-modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeJobDetails()">&times;</span>
+            <div id="jobDetailsContent">
+                <!-- Job details will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample job data for pagination
+        const allJobs = [
+            {
+                id: 1,
+                title: "مهندس برمجيات Full Stack",
+                company: "شركة تقنية المستقبل",
+                location: "الرياض، المملكة العربية السعودية",
+                description: "نحن نبحث عن مهندس برمجيات Full Stack ذو خبرة للانضمام إلى فريقنا المتنامي. يجب أن يكون لديك خبرة في تطوير تطبيقات الويب باستخدام JavaScript وReact وNode.js.",
+                fullDescription: "نحن نبحث عن مهندس برمجيات Full Stack ذو خبرة للانضمام إلى فريقنا المتنامي. ستكون مسؤولاً عن تطوير وتحسين منتجاتنا الرقمية، والعمل مع فريق متعدد التخصصات لتقديم حلول مبتكرة لعملائنا.",
+                requirements: [
+                    "خبرة 3+ سنوات في تطوير تطبيقات الويب",
+                    "إتقان JavaScript وإطار عمل React للواجهة الأمامية",
+                    "خبرة في Node.js وExpress للتطوير الخلفي",
+                    "معرفة جيدة بقواعد البيانات SQL وNoSQL",
+                    "فهم عميق لمبادئ تصميم واجهة المستخدم وتجربة المستخدم",
+                    "القدرة على العمل ضمن فريق والتواصل بشكل فعال"
+                ],
+                benefits: [
+                    "راتب منافس",
+                    "تأمين صحي شامل",
+                    "بيئة عمل مرنة",
+                    "فرص للتطوير المهني والتدريب",
+                    "إجازات سنوية مدفوعة"
+                ],
+                jobType: "دوام كامل",
+                experience: "3-5 سنوات",
+                postedDate: "15 مارس 2025",
+                linkedinUrl: "https://www.linkedin.com/jobs/search/?keywords=Full%20Stack%20Developer&location=Saudi%20Arabia"
+            },
+            {
+                id: 2,
+                title: "مطور واجهة أمامية Senior",
+                company: "شركة الابتكار التقني",
+                location: "دبي، الإمارات العربية المتحدة",
+                description: "مطلوب مطور واجهة أمامية Senior للعمل على مشاريع مبتكرة. يجب أن يكون لديك خبرة في React وVue.js وTypeScript.",
+                fullDescription: "نحن نبحث عن مطور واجهة أمامية Senior للانضمام إلى فريقنا المتنامي في دبي. ستكون مسؤولاً عن تطوير واجهات مستخدم متطورة وتحسين تجربة المستخدم لمنتجاتنا الرقمية.",
+                requirements: [
+                    "خبرة 5+ سنوات في تطوير واجهات المستخدم",
+                    "إتقان React وVue.js وTypeScript",
+                    "خبرة في تطوير تطبيقات الويب التفاعلية",
+                    "معرفة جيدة بـ HTML5 وCSS3 وSASS",
+                    "فهم عميق لمبادئ تصميم واجهة المستخدم وتجربة المستخدم",
+                    "القدرة على قيادة فريق صغير من المطورين"
+                ],
+                benefits: [
+                    "راتب منافس",
+                    "تأمين صحي شامل",
+                    "بدل سكن",
+                    "تذاكر سفر سنوية",
+                    "فرص للتطوير المهني"
+                ],
+                jobType: "دوام كامل",
+                experience: "5+ سنوات",
+                postedDate: "10 مارس 2025",
+                linkedinUrl: "https://www.linkedin.com/jobs/search/?keywords=Senior%20Frontend%20Developer&location=Dubai"
+            },
+            {
+                id: 3,
+                title: "مهندس برمجيات Backend",
+                company: "مجموعة التقنية العربية",
+                location: "القاهرة، مصر",
+                description: "نبحث عن مهندس برمجيات Backend للعمل على تطوير وتحسين خدماتنا. يجب أن يكون لديك خبرة في Node.js وPython وقواعد البيانات SQL وNoSQL.",
+                fullDescription: "نبحث عن مهندس برمجيات Backend للعمل على تطوير وتحسين خدماتنا. ستكون مسؤولاً عن تصميم وتطوير وصيانة الخدمات الخلفية لمنصاتنا الرقمية.",
+                requirements: [
+                    "خبرة 3+ سنوات في تطوير الخدمات الخلفية",
+                    "إتقان Node.js وPython",
+                    "خبرة في العمل مع قواعد البيانات SQL وNoSQL",
+                    "معرفة جيدة بتصميم وتطوير واجهات برمجة التطبيقات (APIs)",
+                    "فهم لمبادئ الأمان السيبراني وحماية البيانات",
+                    "القدرة على العمل ضمن فريق والتواصل بشكل فعال"
+                ],
+                benefits: [
+                    "راتب منافس",
+                    "تأمين صحي",
+                    "بيئة عمل مرنة",
+                    "فرص للتطوير المهني",
+                    "إجازات سنوية مدفوعة"
+                ],
+                jobType: "دوام كامل",
+                experience: "3-5 سنوات",
+                postedDate: "12 مارس 2025",
+                linkedinUrl: "https://www.linkedin.com/jobs/search/?keywords=Backend%20Developer&location=Cairo"
+            },
+            {
+                id: 4,
+                title: "مطور تطبيقات موبايل",
+                company: "شركة التطبيقات الذكية",
+                location: "عن بعد",
+                description: "مطلوب مطور تطبيقات موبايل للعمل على تطبيقات Android وiOS. يجب أن يكون لديك خبرة في React Native أو Flutter.",
+                fullDescription: "نبحث عن مطور تطبيقات موبايل للعمل عن بعد على تطوير تطبيقات لأنظمة Android وiOS. ستكون مسؤولاً عن تصميم وتطوير وصيانة تطبيقات الهاتف المحمول لعملائنا.",
+                requirements: [
+                    "خبرة 2+ سنوات في تطوير تطبيقات الموبايل",
+                    "إتقان React Native أو Flutter",
+                    "خبرة في تطوير تطبيقات لأنظمة Android وiOS",
+                    "معرفة جيدة بمبادئ تصميم واجهة المستخدم للموبايل",
+                    "القدرة على العمل بشكل مستقل وضمن فريق",
+                    "مهارات تواصل ممتازة للعمل عن بعد"
+                ],
+                benefits: [
+                    "راتب منافس",
+                    "ساعات عمل مرنة",
+                    "إمكانية العمل من أي مكان",
+                    "فرص للتطوير المهني",
+                    "مشاريع متنوعة ومثيرة"
+                ],
+                jobType: "عن بعد",
+                experience: "2+ سنوات",
+                postedDate: "14 مارس 2025",
+                linkedinUrl: "https://www.linkedin.com/jobs/search/?keywords=Mobile%20Developer&location=Remote"
+            },
+            {
+                id: 5,
+                title: "مهندس DevOps",
+                company: "شركة الحلول السحابية",
+                location: "جدة، المملكة العربية السعودية",
+                description: "نبحث عن مهندس DevOps للمساعدة في أتمتة عمليات النشر والتكامل المستمر. يجب أن يكون لديك خبرة في Docker وKubernetes وAWS.",
+                fullDescription: "نبحث عن مهندس DevOps للانضمام إلى فريقنا في جدة. ستكون مسؤولاً عن أتمتة عمليات النشر والتكامل المستمر، وإدارة البنية التحتية السحابية، وتحسين أداء أنظمتنا.",
+                requirements: [
+                    "خبرة 3+ سنوات في مجال DevOps",
+                    "إتقان Docker وKubernetes",
+                    "خبرة في إدارة خدمات AWS أو Azure أو GCP",
+                    "معرفة جيدة بأدوات CI/CD مثل Jenkins أو GitLab CI",
+                    "فهم لمبادئ الأمان السيبراني وحماية البنية التحتية",
+                    "القدرة على حل المشكلات المعقدة بشكل فعال"
+                ],
+                benefits: [
+                    "راتب منافس",
+                    "تأمين صحي شامل",
+                    "بدل سكن ومواصلات",
+                    "فرص للتطوير المهني والتدريب",
+                    "بيئة عمل محفزة"
+                ],
+                jobType: "دوام كامل",
+                experience: "3-5 سنوات",
+                postedDate: "8 مارس 2025",
+                linkedinUrl: "https://www.linkedin.com/jobs/search/?keywords=DevOps%20Engineer&location=Jeddah"
+            },
+            {
+                id: 6,
+                title: "مهندس ذكاء اصطناعي",
+                company: "شركة تقنيات المستقبل",
+                location: "أبو ظبي، الإمارات العربية المتحدة",
+                description: "مطلوب مهندس ذكاء اصطناعي للعمل على مشاريع مبتكرة. يجب أن يكون لديك خبرة في Python وTensorFlow وPyTorch.",
+                fullDescription: "نبحث عن مهندس ذكاء اصطناعي للانضمام إلى فريقنا في أبو ظبي. ستكون مسؤولاً عن تطوير وتحسين نماذج الذكاء الاصطناعي والتعلم الآلي لمنتجاتنا المبتكرة.",
+                requirements: [
+                    "خبرة 3+ سنوات في مجال الذكاء الاصطناعي والتعلم الآلي",
+                    "إتقان Python وTensorFlow وPyTorch",
+                    "خبرة في تطوير وتدريب نماذج التعلم العميق",
+                    "معرفة جيدة بمعالجة اللغات الطبيعية ورؤية الكمبيوتر",
+                    "درجة ماجستير أو دكتوراه في علوم الكمبيوتر أو مجال ذي صلة (مفضل)",
+                    "القدرة على البحث وتطبيق أحدث التقنيات في مجال الذكاء الاصطناعي"
+                ],
+                benefits: [
+                    "راتب منافس",
+                    "تأمين صحي شامل",
+                    "بدل سكن",
+                    "تذاكر سفر سنوية",
+                    "فرص للمشاركة في المؤتمرات العالمية"
+                ],
+                jobType: "دوام كامل",
+                experience: "3+ سنوات",
+                postedDate: "5 مارس 2025",
+                linkedinUrl: "https://www.linkedin.com/jobs/search/?keywords=AI%20Engineer&location=Abu%20Dhabi"
+            },
+            {
+                id: 7,
+                title: "مطور قواعد بيانات",
+                company: "شركة البيانات المتقدمة",
+                location: "الدوحة، قطر",
+                description: "نبحث عن مطور قواعد بيانات للعمل على تصميم وتطوير وتحسين قواعد البيانات. يجب أن يكون لديك خبرة في SQL وNoSQL وتحسين الأداء.",
+                fullDescription: "نبحث عن مطور قواعد بيانات للانضمام إلى فريقنا في الدوحة. ستكون مسؤولاً عن تصميم وتطوير وتحسين قواعد البيانات لمنصاتنا الرقمية، وضمان أدائها وأمانها.",
+                requirements: [
+                    "خبرة 4+ سنوات في تطوير وإدارة قواعد البيانات",
+                    "إتقان SQL وقواعد بيانات مثل MySQL وPostgreSQL",
+                    "خبرة في قواعد بيانات NoSQL مثل MongoDB وCassandra",
+                    "معرفة جيدة بتحسين أداء قواعد البيانات وتنفيذ الاستعلامات المعقدة",
+                    "فهم لمبادئ أمان البيانات والامتثال للمعايير",
+                    "القدرة على العمل ضمن فريق متعدد التخصصات"
+                ],
+                benefits: [
+                    "راتب منافس",
+                    "تأمين صحي شامل",
+                    "بدل سكن ومواصلات",
+                    "فرص للتطوير المهني",
+                    "بيئة عمل محفزة"
+                ],
+                jobType: "دوام كامل",
+                experience: "4+ سنوات",
+                postedDate: "9 مارس 2025",
+                linkedinUrl: "https://www.linkedin.com/jobs/search/?keywords=Database%20Developer&location=Doha"
+            },
+            {
+                id: 8,
+                title: "مهندس أمن سيبراني",
+                company: "شركة الأمن الرقمي",
+                location: "الكويت",
+                description: "مطلوب مهندس أمن سيبراني للمساعدة في حماية البنية التحتية والتطبيقات. يجب أن يكون لديك خبرة في تقييم المخاطر واختبار الاختراق.",
+                fullDescription: "نبحث عن مهندس أمن سيبراني للانضمام إلى فريقنا في الكويت. ستكون مسؤولاً عن حماية البنية التحتية والتطبيقات من التهديدات السيبرانية، وتنفيذ أفضل ممارسات الأمان.",
+                requirements: [
+                    "خبرة 3+ سنوات في مجال الأمن السيبراني",
+                    "شهادات معتمدة في مجال الأمن السيبراني (مثل CISSP أو CEH)",
+                    "خبرة في تقييم المخاطر واختبار الاختراق",
+                    "معرفة جيدة بأنظمة كشف ومنع التسلل",
+                    "فهم عميق لأفضل ممارسات الأمان وإطار عمل الامتثال",
+                    "القدرة على الاستجابة السريعة للحوادث الأمنية"
+                ],
+                benefits: [
+                    "راتب منافس",
+                    "تأمين صحي شامل",
+                    "بدل سكن ومواصلات",
+                    "فرص للتدريب والحصول على شهادات معتمدة",
+                    "بيئة عمل محفزة"
+                ],
+                jobType: "دوام كامل",
+                experience: "3+ سنوات",
+                postedDate: "7 مارس 2025",
+                linkedinUrl: "https://www.linkedin.com/jobs/search/?keywords=Cybersecurity%20Engineer&location=Kuwait"
+            }
+        ];
+        
+        // Function to filter jobs based on search criteria
+        function filterJobs() {
+            const titleInput = document.getElementById('jobTitle').value.trim().toLowerCase();
+            const locationInput = document.getElementById('jobLocation').value.trim().toLowerCase();
+            const jobTypeSelect = document.getElementById('jobType');
+            const jobType = jobTypeSelect.options[jobTypeSelect.selectedIndex].value;
+            const experienceSelect = document.getElementById('experienceLevel');
+            const experience = experienceSelect.options[experienceSelect.selectedIndex].value;
+            
+            // Filter jobs based on criteria
+            return allJobs.filter(job => {
+                // Title filter
+                const titleMatch = titleInput === '' || job.title.toLowerCase().includes(titleInput);
+                
+                // Location filter
+                const locationMatch = locationInput === '' || job.location.toLowerCase().includes(locationInput);
+                
+                // Job type filter
+                const jobTypeMatch = jobType === '' || job.jobType === jobType;
+                
+                // Experience filter
+                let experienceMatch = true;
+                if (experience !== '') {
+                    if (experience === 'entry' && !job.experience.includes('1-2')) {
+                        experienceMatch = false;
+                    } else if (experience === 'mid' && !job.experience.includes('3-5')) {
+                        experienceMatch = false;
+                    } else if (experience === 'senior' && !job.experience.includes('5+') && !job.experience.includes('6+')) {
+                        experienceMatch = false;
+                    }
+                }
+                
+                return titleMatch && locationMatch && jobTypeMatch && experienceMatch;
+            });
+        }
+
+        // Function to display jobs
+        function displayJobs(page = 1) {
+            const filteredJobs = filterJobs();
+            const jobsPerPage = 3;
+            const startIndex = (page - 1) * jobsPerPage;
+            const endIndex = startIndex + jobsPerPage;
+            const paginatedJobs = filteredJobs.slice(startIndex, endIndex);
+            
+            const jobsContainer = document.getElementById('jobsContainer');
+            jobsContainer.innerHTML = '';
+            
+            if (filteredJobs.length === 0) {
+                jobsContainer.innerHTML = '<div class="no-jobs-found">لا توجد وظائف تطابق معايير البحث. يرجى تعديل معايير البحث والمحاولة مرة أخرى.</div>';
+                document.getElementById('pagination').style.display = 'none';
+                return;
+            }
+            
+            paginatedJobs.forEach(job => {
+                // Append location with search location if provided
+                const locationInput = document.getElementById('jobLocation').value.trim();
+                let displayLocation = job.location;
+                if (locationInput) {
+                    displayLocation += ` - ${locationInput}`;
+                }
+                
+                const jobElement = document.createElement('div');
+                jobElement.className = 'job-card';
+                jobElement.innerHTML = `
+                    <h3 class="job-title">${job.title}</h3>
+                    <div class="job-company">${job.company}</div>
+                    <div class="job-location">${displayLocation}</div>
+                    <p class="job-description">${job.description}</p>
+                    <a href="#" class="job-details-link" onclick="showJobDetails(${job.id}); return false;">عرض التفاصيل</a>
+                `;
+                jobsContainer.appendChild(jobElement);
+            });
+            
+            // Update pagination
+            updatePagination(page, Math.ceil(filteredJobs.length / jobsPerPage));
+        }
+
+        // Function to update pagination
+        function updatePagination(currentPage, totalPages) {
+            const pagination = document.getElementById('pagination');
+            pagination.style.display = 'flex';
+            pagination.innerHTML = '';
+            
+            // Previous button
+            const prevButton = document.createElement('button');
+            prevButton.className = 'pagination-button';
+            prevButton.textContent = 'السابق';
+            prevButton.disabled = currentPage === 1;
+            prevButton.onclick = () => displayJobs(currentPage - 1);
+            pagination.appendChild(prevButton);
+            
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.className = `pagination-button ${i === currentPage ? 'active' : ''}`;
+                pageButton.textContent = i;
+                pageButton.onclick = () => displayJobs(i);
+                pagination.appendChild(pageButton);
+            }
+            
+            // Next button
+            const nextButton = document.createElement('button');
+            nextButton.className = 'pagination-button';
+            nextButton.textContent = 'التالي';
+            nextButton.disabled = currentPage === totalPages;
+            nextButton.onclick = () => displayJobs(currentPage + 1);
+            pagination.appendChild(nextButton);
+        }
+
+        // Initialize the job search form
+        function initJobSearch() {
+            // Populate job type dropdown
+            const jobTypeSelect = document.getElementById('jobType');
+            const jobTypes = ['دوام كامل', 'دوام جزئي', 'عن بعد', 'تدريب', 'تعاقد'];
+            
+            // Add empty option
+            const emptyOption = document.createElement('option');
+            emptyOption.value = '';
+            emptyOption.textContent = 'جميع الأنواع';
+            jobTypeSelect.appendChild(emptyOption);
+            
+            // Add job type options
+            jobTypes.forEach(type => {
+                const option = document.createElement('option');
+                option.value = type;
+                option.textContent = type;
+                jobTypeSelect.appendChild(option);
+            });
+            
+            // Populate experience level dropdown
+            const experienceSelect = document.getElementById('experienceLevel');
+            const experienceLevels = [
+                { value: '', text: 'جميع المستويات' },
+                { value: 'entry', text: 'مبتدئ (1-2 سنوات)' },
+                { value: 'mid', text: 'متوسط (3-5 سنوات)' },
+                { value: 'senior', text: 'خبير (5+ سنوات)' }
+            ];
+            
+            experienceLevels.forEach(level => {
+                const option = document.createElement('option');
+                option.value = level.value;
+                option.textContent = level.text;
+                experienceSelect.appendChild(option);
+            });
+            
+            // Add event listener for search button
+            document.getElementById('linkedinJobsForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                displayJobs(1);
+            });
+            
+            // Display initial jobs
+            displayJobs(1);
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initJobSearch();
+        });
+        
+        // Function to show job details in modal
+        function showJobDetails(jobId) {
+            const job = allJobs.find(j => j.id === jobId);
+            if (!job) return;
+            
+            const modal = document.getElementById('jobDetailsModal');
+            const modalContent = document.getElementById('jobDetailsContent');
+            
+            // Get the search location if provided
+            const locationInput = document.getElementById('jobLocation').value.trim();
+            let displayLocation = job.location;
+            if (locationInput) {
+                displayLocation += ` - ${locationInput}`;
+            }
+            
+            // Create the job details HTML
+            let detailsHTML = `
+                <div class="job-details-header">
+                    <h2 class="job-details-title">${job.title}</h2>
+                    <div class="job-details-company">${job.company}</div>
+                    <div class="job-details-location">${displayLocation}</div>
+                    <div>نوع الوظيفة: ${job.jobType} | الخبرة المطلوبة: ${job.experience} | تاريخ النشر: ${job.postedDate}</div>
+                </div>
+                
+                <div class="job-details-section">
+                    <h3>وصف الوظيفة</h3>
+                    <p class="job-details-description">${job.fullDescription}</p>
+                </div>
+                
+                <div class="job-details-section">
+                    <h3>المتطلبات</h3>
+                    <ul class="job-requirements-list">
+            `;
+            
+            // Add requirements
+            job.requirements.forEach(req => {
+                detailsHTML += `<li>${req}</li>`;
+            });
+            
+            detailsHTML += `
+                    </ul>
+                </div>
+                
+                <div class="job-details-section">
+                    <h3>المزايا</h3>
+                    <ul class="job-requirements-list">
+            `;
+            
+            // Add benefits
+            job.benefits.forEach(benefit => {
+                detailsHTML += `<li>${benefit}</li>`;
+            });
+            
+            // Update LinkedIn URL with search parameters if provided
+            let linkedinUrl = job.linkedinUrl;
+            if (locationInput) {
+                // Replace the location parameter in the LinkedIn URL
+                linkedinUrl = linkedinUrl.replace(/location=[^&]+/, `location=${encodeURIComponent(locationInput)}`);
+            }
+            
+            detailsHTML += `
+                    </ul>
+                </div>
+                
+                <div class="job-details-section" style="text-align: center;">
+                    <a href="${linkedinUrl}" target="_blank" class="apply-button" style="text-decoration: none; display: inline-block;">تقدم للوظيفة الآن</a>
+                </div>
+            `;
+            
+            modalContent.innerHTML = detailsHTML;
+            modal.style.display = 'block';
+            
+            // Prevent scrolling on the body when modal is open
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Function to close job details modal
+        function closeJobDetails() {
+            const modal = document.getElementById('jobDetailsModal');
+            modal.style.display = 'none';
+            
+            // Re-enable scrolling on the body
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('jobDetailsModal');
+            if (event.target === modal) {
+                closeJobDetails();
+            }
+        };
+    </script>
+</body>
+</html>
