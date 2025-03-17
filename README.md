@@ -1,1 +1,1 @@
-AI-Powered Career Development Platform
+منصة سكيلفاي - تطوير المهارات والمسار المهني بتقنية الذكاء الاصطناعي

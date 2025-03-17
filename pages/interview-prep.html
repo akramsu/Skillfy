@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>التحضير للمقابلات الوظيفية - سكيلفاي</title>
+    <link rel="stylesheet" href="../styles/interview-prep.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="nav">
+        <div class="container nav-container">
+            <a href="home.html" class="logo">
+                سكيلفاي
+                <img src="../assets/images/logo.png" alt="Skillfy Logo" class="logo-icon">
+            </a>
+            <div class="nav-links">
+                <a href="home.html" class="nav-link">الرئيسية</a>
+                <a href="skills-learning.html" class="nav-link">تطوير المهارات</a>
+                <a href="resume-analyzer.html" class="nav-link">تحليل السيرة الذاتية</a>
+                <a href="linkedin-jobs.html" class="nav-link">فرص العمل</a>
+                <a href="interview-prep.html" class="nav-link active">التحضير للمقابلات</a>
+            </div>
+            <button class="logout-btn">تسجيل الخروج</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">استعد للنجاح في مقابلاتك الوظيفية</h1>
+                <p class="hero-description">
+                    نساعدك على التحضير الأمثل للمقابلات الوظيفية من خلال أسئلة مخصصة، محاكاة للمقابلات، ونصائح احترافية تزيد من فرص قبولك في الوظيفة المناسبة.
+                </p>
+            </div>
+            <img src="../assets/images/interview.png" alt="Interview Preparation" class="hero-image">
+        </div>
+    </section>
+
+    <!-- Interview Preparation Form -->
+    <section class="interview-prep">
+        <div class="container">
+            <h2 class="section-title">تحضير مخصص للمقابلة</h2>
+            <p class="section-description">
+                أدخل معلومات الوظيفة التي تتقدم لها للحصول على تحضير مخصص يناسب احتياجاتك
+            </p>
+
+            <div class="prep-form-container">
+                <form id="interviewPrepForm" class="prep-form">
+                    <div class="form-group">
+                        <label for="jobTitle">المسمى الوظيفي</label>
+                        <input type="text" id="jobTitle" name="jobTitle" placeholder="مثال: مطور واجهة أمامية، محلل بيانات" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="industry">المجال / القطاع</label>
+                        <select id="industry" name="industry" required>
+                            <option value="" disabled selected>اختر المجال</option>
+                            <option value="tech">التكنولوجيا والبرمجيات</option>
+                            <option value="finance">المالية والمصرفية</option>
+                            <option value="healthcare">الرعاية الصحية</option>
+                            <option value="education">التعليم</option>
+                            <option value="marketing">التسويق والمبيعات</option>
+                            <option value="engineering">الهندسة</option>
+                            <option value="design">التصميم</option>
+                            <option value="hr">الموارد البشرية</option>
+                            <option value="consulting">الاستشارات</option>
+                            <option value="other">مجال آخر</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="experience">مستوى الخبرة</label>
+                        <select id="experience" name="experience" required>
+                            <option value="" disabled selected>اختر مستوى الخبرة</option>
+                            <option value="entry">مبتدئ (0-2 سنوات)</option>
+                            <option value="mid">متوسط (3-5 سنوات)</option>
+                            <option value="senior">خبير (6-9 سنوات)</option>
+                            <option value="lead">قيادي (10+ سنوات)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="companyName">اسم الشركة (اختياري)</label>
+                        <input type="text" id="companyName" name="companyName" placeholder="اسم الشركة التي تتقدم للعمل بها">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="keySkills">المهارات الرئيسية للوظيفة</label>
+                        <textarea id="keySkills" name="keySkills" placeholder="أدخل المهارات الرئيسية المطلوبة للوظيفة مفصولة بفواصل"></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">تحضير للمقابلة</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Common Interview Questions Section -->
+    <section class="interview-questions" id="interviewQuestions" style="display: none;">
+        <div class="container">
+            <h2 class="section-title">الأسئلة المتوقعة في المقابلة</h2>
+            
+            <div class="questions-container">
+                <div class="questions-tabs">
+                    <button class="tab-btn active" data-tab="technical">أسئلة تقنية</button>
+                    <button class="tab-btn" data-tab="behavioral">أسئلة سلوكية</button>
+                    <button class="tab-btn" data-tab="company">أسئلة عن الشركة</button>
+                    <button class="tab-btn" data-tab="general">أسئلة عامة</button>
+                </div>
+                
+                <div class="tab-content active" id="technical">
+                    <div class="question-list" id="technicalQuestions">
+                        <!-- Questions will be dynamically added here -->
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="behavioral">
+                    <div class="question-list" id="behavioralQuestions">
+                        <!-- Questions will be dynamically added here -->
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="company">
+                    <div class="question-list" id="companyQuestions">
+                        <!-- Questions will be dynamically added here -->
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="general">
+                    <div class="question-list" id="generalQuestions">
+                        <!-- Questions will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="answer-tips">
+                <h3>نصائح للإجابة على الأسئلة</h3>
+                <ul>
+                    <li>استخدم طريقة STAR (الموقف، المهمة، الإجراء، النتيجة) للإجابة على الأسئلة السلوكية</li>
+                    <li>قدم أمثلة محددة من تجاربك السابقة</li>
+                    <li>كن صادقاً وأصيلاً في إجاباتك</li>
+                    <li>ركز على إنجازاتك وكيف تخطيت التحديات</li>
+                    <li>اظهر شغفك وحماسك للوظيفة والشركة</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mock Interview Simulator -->
+    <section class="mock-interview" id="mockInterview" style="display: none;">
+        <div class="container">
+            <h2 class="section-title">محاكاة المقابلة الوظيفية</h2>
+            <p class="section-description">
+                تدرب على المقابلة في بيئة آمنة وتفاعلية تحاكي المقابلة الحقيقية
+            </p>
+            
+            <div class="simulator-container">
+                <div class="simulator-header">
+                    <h3 id="simulatorTitle">محاكاة مقابلة: <span id="simulatorJobTitle">المسمى الوظيفي</span></h3>
+                    <div class="simulator-controls">
+                        <button id="startSimulator" class="control-btn">ابدأ المحاكاة</button>
+                        <button id="pauseSimulator" class="control-btn" disabled>إيقاف مؤقت</button>
+                        <button id="resetSimulator" class="control-btn" disabled>إعادة ضبط</button>
+                    </div>
+                </div>
+                
+                <div class="simulator-content">
+                    <div class="interviewer-section">
+                        <div class="interviewer-avatar">
+                            <img src="../assets/images/interviewer.png" alt="Interviewer">
+                        </div>
+                        <div class="question-bubble">
+                            <p id="currentQuestion">اضغط على زر "ابدأ المحاكاة" للبدء.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="answer-section">
+                        <div class="timer-container">
+                            <div class="timer" id="answerTimer">02:00</div>
+                            <p class="timer-label">الوقت المتبقي للإجابة</p>
+                        </div>
+                        
+                        <div class="answer-input">
+                            <textarea id="answerInput" placeholder="اكتب إجابتك هنا..." disabled></textarea>
+                            <button id="submitAnswer" class="submit-answer-btn" disabled>تقديم الإجابة</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="simulator-feedback" id="answerFeedback" style="display: none;">
+                    <h3>تحليل الإجابة</h3>
+                    <div class="feedback-content" id="feedbackContent">
+                        <!-- Feedback will be dynamically added here -->
+                    </div>
+                    <button id="nextQuestion" class="next-btn">السؤال التالي</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interview Tips Section -->
+    <section class="interview-tips">
+        <div class="container">
+            <h2 class="section-title">نصائح للنجاح في المقابلة</h2>
+            
+            <div class="tips-container">
+                <div class="tip-card">
+                    <div class="tip-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>البحث والتحضير</h3>
+                    <p>ابحث عن الشركة وثقافتها ومنتجاتها وقيمها قبل المقابلة. كلما كنت أكثر استعداداً، كلما زادت ثقتك بنفسك.</p>
+                </div>
+                
+                <div class="tip-card">
+                    <div class="tip-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>الوصول في الوقت المناسب</h3>
+                    <p>خطط للوصول قبل 10-15 دقيقة من موعد المقابلة. التأخير يعطي انطباعاً سيئاً عن التزامك ومهنيتك.</p>
+                </div>
+                
+                <div class="tip-card">
+                    <div class="tip-icon">
+                        <i class="fas fa-tshirt"></i>
+                    </div>
+                    <h3>المظهر المهني</h3>
+                    <p>ارتدِ ملابس مناسبة لثقافة الشركة وطبيعة الوظيفة. المظهر المهني يعزز من فرصك ويظهر احترامك للفرصة.</p>
+                </div>
+                
+                <div class="tip-card">
+                    <div class="tip-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3>مهارات التواصل</h3>
+                    <p>تحدث بوضوح وثقة، واستمع جيداً للأسئلة قبل الإجابة. التواصل الفعال من أهم عوامل النجاح في المقابلة.</p>
+                </div>
+                
+                <div class="tip-card">
+                    <div class="tip-icon">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <h3>طرح الأسئلة</h3>
+                    <p>حضّر أسئلة ذكية لطرحها على المحاور. هذا يظهر اهتمامك بالوظيفة ويساعدك على فهم ما إذا كانت مناسبة لك.</p>
+                </div>
+                
+                <div class="tip-card">
+                    <div class="tip-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3>المتابعة بعد المقابلة</h3>
+                    <p>أرسل رسالة شكر بعد المقابلة للتعبير عن تقديرك للفرصة واهتمامك بالوظيفة. هذا يتركك في ذاكرة المحاور.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="container">
+            <h2 class="section-title">قصص نجاح</h2>
+            
+            <div class="testimonials-slider">
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        <p>"ساعدني تطبيق سكيلفاي في التحضير لمقابلتي كمطور برمجيات. الأسئلة المتوقعة كانت دقيقة جداً وتمكنت من الإجابة عليها بثقة خلال المقابلة الحقيقية. حصلت على الوظيفة!"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-info">
+                            <h4>أحمد محمد</h4>
+                            <p>مطور برمجيات - شركة تقنية</p>
+                        </div>
+                        <div class="author-avatar">
+                            <img src="../assets/images/testimonial1.png" alt="Ahmed Mohamed">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial">
+                    <div class="testimonial-content">
+                        <p>"محاكاة المقابلة كانت تجربة رائعة ساعدتني على التغلب على توتر المقابلات. النصائح المخصصة والتحليل الدقيق لإجاباتي جعلني أكثر استعداداً للمقابلة الحقيقية."</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-info">
+                            <h4>سارة أحمد</h4>
+                            <p>محللة بيانات - شركة استشارات</p>
+                        </div>
+                        <div class="author-avatar">
+                            <img src="../assets/images/testimonial2.png" alt="Sara Ahmed">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <a href="home.html" class="logo">
+                        سكيلفاي
+                        <img src="../assets/images/logo.png" alt="Skillfy Logo" class="logo-icon">
+                    </a>
+                    <p>منصة سكيلفاي - تطوير المهارات والمسار المهني بتقنية الذكاء الاصطناعي</p>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="footer-links-column">
+                        <h3>روابط سريعة</h3>
+                        <ul>
+                            <li><a href="home.html">الرئيسية</a></li>
+                            <li><a href="skills-learning.html">تطوير المهارات</a></li>
+                            <li><a href="resume-analyzer.html">تحليل السيرة الذاتية</a></li>
+                            <li><a href="linkedin-jobs.html">فرص العمل</a></li>
+                            <li><a href="interview-prep.html">التحضير للمقابلات</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-links-column">
+                        <h3>الدعم</h3>
+                        <ul>
+                            <li><a href="#">الأسئلة الشائعة</a></li>
+                            <li><a href="#">اتصل بنا</a></li>
+                            <li><a href="#">سياسة الخصوصية</a></li>
+                            <li><a href="#">شروط الاستخدام</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2025 سكيلفاي. جميع الحقوق محفوظة.</p>
+                
+                <div class="footer-bottom-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/interview-prep.js"></script>
+</body>
+</html>
