@@ -1,130 +1,163 @@
-# AI Resume Analyzer and LinkedIn Scraper using Generative AI
+# Skillfy AI - منصة تطوير المهارات والتوجيه المهني بالذكاء الاصطناعي
 
-**Introduction**
+<div align="center">
+  <h3>🌟 مشاركة في هاكاثون سلام 🌟</h3>
+</div>
 
-Developed an advanced AI application that leverages Retrieval-Augmented Generation (RAG), Large Language Models (LLM), and OpenAI for comprehensive resume analysis. It excels at summarizing the resume, evaluating strengths, identifying weaknesses, and offering personalized improvement suggestions while also recommending the perfect job titles. Additionally, it seamlessly employs Selenium to extract vital LinkedIn data, including company names, job titles, locations, job URLs, and detailed job descriptions. This application simplifies the job-seeking journey by equipping users with comprehensive insights to elevate their career opportunities.
+## 🇸🇦 نبذة عن المشروع
 
-<br />
+منصة مبتكرة تعتمد على الذكاء الاصطناعي التوليدي، تهدف إلى مساعدة المستخدمين في تطوير مهاراتهم الشخصية والمهنية، وتحسين فرصهم الوظيفية. يقدم التطبيق مجموعة من الخدمات المتكاملة:
 
-**Table of Contents**
+- **تحليل السيرة الذاتية**: تقييم شامل للسيرة الذاتية مع تحديد نقاط القوة والضعف
+- **اقتراح الوظائف المناسبة**: تحديد المسميات الوظيفية الأنسب بناءً على المهارات والخبرات
+- **توصيات التعلم**: اقتراح دورات ومصادر تعليمية مخصصة لتطوير المهارات المطلوبة
+- **إنشاء سيرة ذاتية احترافية**: مساعدة في إنشاء سيرة ذاتية متميزة
+- **إنشاء موقع شخصي**: تصميم وإنشاء موقع شخصي احترافي لعرض المهارات والإنجازات
+- **استعراض فرص العمل**: جمع وعرض فرص العمل المناسبة من منصة لينكدإن
+- **التحضير للمقابلات**: توليد أسئلة المقابلات المتوقعة والإجابات المثالية
 
-1. Key Technologies and Skills
-2. Installation
-3. Usage
-4. Features
-5. Contributing
-6. License
-7. Contact
+كل ذلك يتم بشكل مخصص وسهل الاستخدام، مما يساعد المستخدمين على تحقيق أهدافهم المهنية بكفاءة أكبر.
 
-<br />
+## 🇬🇧 Project Overview
 
-**Key Technologies and Skills**
+An innovative platform powered by generative AI, designed to help users develop their personal and professional skills while enhancing their career opportunities. The application offers a comprehensive suite of integrated services:
+
+- **Resume Analysis**: Comprehensive evaluation of resumes with strengths and weaknesses identification
+- **Job Title Suggestions**: Identifying the most suitable job titles based on skills and experience
+- **Learning Recommendations**: Suggesting customized courses and educational resources to develop required skills
+- **Professional Resume Creation**: Assistance in creating outstanding resumes
+- **Personal Website Creation**: Designing and building a professional personal website to showcase skills and achievements
+- **Job Opportunity Exploration**: Collecting and displaying suitable job opportunities from LinkedIn
+- **Interview Preparation**: Generating expected interview questions and ideal answers
+
+All of this is done in a personalized and user-friendly manner, helping users achieve their career goals more efficiently.
+
+## ⚙️ التقنيات الرئيسية | Key Technologies
+
 - Python
-- NumPy
-- Pandas
-- LangChain
-- Large Language Model (LLM)
-- Retrieval-Augmented Generation (RAG)
-- OpenAI
-- Selenium
-- AWS
-- Hugging Face
 - Streamlit
+- Google Generative AI (Gemini)
+- LangChain
+- PyPDF2
+- Selenium
+- FAISS (Facebook AI Similarity Search)
 
-<br />
+## 🚀 المميزات | Features
 
-**Installation**
+### 📊 تحليل السيرة الذاتية | Resume Analysis
+- **الملخص**: استعراض شامل للمؤهلات والخبرات والمهارات الرئيسية
+- **نقاط القوة**: تحديد وتحليل نقاط القوة في السيرة الذاتية
+- **نقاط الضعف**: تحديد مجالات التحسين مع اقتراحات عملية
+- **تحليل شامل للسيرة الذاتية**: تقييم متكامل للسيرة الذاتية
+
+### 💼 اقتراحات الوظائف | Job Suggestions
+- **المسميات الوظيفية المناسبة**: اقتراح وظائف تتناسب مع مهاراتك وخبراتك
+- **استكشاف فرص العمل على لينكدإن**: البحث الآلي عن الوظائف المناسبة
+
+### 📚 توصيات التعلم | Learning Recommendations
+- **دورات مخصصة**: اقتراح دورات تدريبية بناءً على تحليل السيرة الذاتية
+- **مصادر تعليمية متنوعة**: توفير روابط لمنصات تعليمية متعددة
+
+### 📝 إنشاء السيرة الذاتية | Resume Creation
+- **قوالب احترافية**: إنشاء سيرة ذاتية بتنسيق احترافي
+- **محتوى مخصص**: صياغة محتوى يبرز مهاراتك وخبراتك
+
+### 📄 إنشاء موقع شخصي | Personal Website Creation
+- **تصميم احترافي**: تصميم موقع شخصي احترافي لعرض المهارات والإنجازات
+- **بناء الموقع**: بناء الموقع الشخصي باستخدام تقنيات الويب الحديثة
+
+### 🎯 التحضير للمقابلات | Interview Preparation
+- **أسئلة المقابلات**: توليد أسئلة متوقعة بناءً على الوظيفة والمهارات
+- **إجابات مقترحة**: تقديم إرشادات للإجابة على الأسئلة بشكل فعال
+
+## ⚙️ التثبيت | Installation
+
+لتشغيل هذا المشروع، تحتاج إلى تثبيت الحزم التالية:
 
 To run this project, you need to install the following packages:
 
+```bash
+pip install -r requirements.txt
+```
+
+أو تثبيت كل حزمة على حدة:
+
+Or install each package separately:
+
 ```python
-pip install numpy
-pip install pandas
 pip install streamlit
 pip install streamlit_option_menu
 pip install streamlit_extras
 pip install PyPDF2
 pip install langchain
-pip install openai
-pip install tiktoken
+pip install langchain_google_genai
+pip install google-generativeai
 pip install faiss-cpu
 pip install selenium
+pip install python-dotenv
 ```
 
-<br />
+## 🔑 متطلبات API | API Requirements
 
-**Usage**
+يتطلب المشروع مفتاح API من Google Gemini:
+
+The project requires an API key from Google Gemini:
+
+1. احصل على مفتاح API من [Google AI Studio](https://makersuite.google.com/app/apikey)
+2. قم بإنشاء ملف `.env` في المجلد الرئيسي وأضف المفتاح:
+
+1. Get an API key from [Google AI Studio](https://makersuite.google.com/app/apikey)
+2. Create a `.env` file in the root directory and add your key:
+
+```
+GEMINI_API_KEY=your_api_key_here
+```
+
+## 🚀 الاستخدام | Usage
+
+لتشغيل التطبيق، اتبع الخطوات التالية:
 
 To use this project, follow these steps:
 
-1. Clone the repository: ```https://github.com/gopiashokan/AI-Powered-Resume-Analyzer-and-LinkedIn-Scraper-with-Selenium.git```
-2. Install the required packages: ```pip install -r requirements.txt```
-3. Run the Streamlit app: ```streamlit run app.py```
-4. Access the app in your browser at ```http://localhost:8501```
+1. استنساخ المستودع: | Clone the repository:
+   ```bash
+   git clone https://github.com/akramsu/Skillfy_AI.git
+   ```
 
-<br />
+2. الانتقال إلى المجلد: | Navigate to the directory:
+   ```bash
+   cd Skillfy_AI
+   ```
 
-**Features**
+3. تثبيت المتطلبات: | Install requirements:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-**Easy User Experience:**
-- Resume Analyzer AI makes it easy for users. You can upload your resume and enter your OpenAI API key without any hassle. The application is designed to be user-friendly so that anyone can use its powerful resume analysis features.
-- It also uses the PyPDF2 library to quickly extract text from your uploaded resume, which is the first step in doing a thorough analysis.
+4. تشغيل التطبيق: | Run the app:
+   ```bash
+   streamlit run src/main.py
+   ```
 
-**Smart Text Analysis with Langchain:**
-- What makes it special is how it analyzes text. It uses a smart method called the Langchain library to break long sections of text from resumes into smaller chunks, making them more meaningful.
-- This clever technique improves the accuracy of the resume analysis, and it gives users practical advice on how to enhance their job prospects.
+5. الوصول إلى التطبيق في المتصفح على: | Access the app in your browser at:
+   ```
+   http://localhost:8501
+   ```
 
-**Enhanced OpenAI Integration with FAISS:**
-- Seamlessly connecting to OpenAI services, the application establishes a secure connection using your OpenAI API key. This integration forms the basis for robust interactions, facilitating advanced analysis and efficient information retrieval.
-- It uses the FAISS(Facebook AI Similarity Search) library to convert both the text chunks and query text data into numerical vectors, simplifying the analysis process and enabling the retrieval of pertinent information.
+## 👥 المساهمة | Contributing
 
-**Intelligent Chunk Selection in RAG and LLM:**
-- The application retrieves relevant text by comparing the user query with stored vector embeddings and selecting the Top K documents based on their similarity scores. This ensures that only the most relevant information is considered for further processing.
-- Once the most relevant documents are selected, the system initializes a Large Language Model (LLM), specifically the ChatGPT 3.5 Turbo model to analyze and generate responses based on the retrieved content.
+نرحب بمساهماتكم! يرجى إرسال طلبات السحب أو فتح مشكلة لاقتراح تحسينات.
 
-**Robust Question-Answering Pipeline:**
-- The QA pipeline processes the Top K documents and the user query to generate meaningful responses. The system extracts relevant information from the retrieved content, ensuring accuracy and coherence.
-- The LLM analyzes the selected documents and formulates responses by understanding the context within the retrieved text. This approach enhances response quality by focusing on the most relevant data instead of relying solely on the initial query.
+Contributions are welcome! Please send pull requests or open an issue to suggest improvements.
 
-**Comprehensive Resume Analysis:**
-- **Summary:** Resume Analyzer AI provides a quick, comprehensive overview of resumes, emphasizing qualifications, key experience, skills, projects, and achievements. Users can swiftly grasp profiles, enhancing review efficiency and insight.
-- **Strength:** Effortlessly conducting a comprehensive resume review, it analyzes qualifications, experience, and accomplishments. It subsequently highlights strengths, providing job seekers with a competitive edge.
-- **Weakness:** AI conducts thorough analysis to pinpoint weaknesses and offers tailored solutions for transforming them into strengths, empowering job seekers.
-- **Suggestion:** AI provides personalized job title recommendations that align closely with the user's qualifications and resume content, facilitating an optimized job search experience.
+## 📄 الترخيص | License
 
-<br />
+هذا المشروع مرخص بموجب [MIT License](LICENSE).
 
-🚀 **Streamlit application:** [https://huggingface.co/spaces/gopiashokan/Resume-Analyzer-AI](https://huggingface.co/spaces/gopiashokan/Resume-Analyzer-AI)
+This project is licensed under the [MIT License](LICENSE).
 
-<br />
+## 📞 التواصل | Contact
 
-**Selenium-Powered LinkedIn Data Scraping:**
-- Utilizing Selenium and a Webdriver automated test tool, this feature enables users to input job titles, automating the data scraping process from LinkedIn. The scraped data includes crucial details such as company names, job titles, locations, URLs, and comprehensive job descriptions.
-- This streamlined process enables users to easily review scraped job details and apply for positions, simplifying their job search and application experience.
+للاستفسارات أو الاقتراحات، يرجى التواصل عبر [GitHub](https://github.com/akramsu).
 
-<br />
-
-🎥 **Project Demo Video:** [https://youtu.be/wFouWeK7NPg](https://youtu.be/wFouWeK7NPg)
-
-<br />
-
-**Contributing**
-
-Contributions to this project are welcome! If you encounter any issues or have suggestions for improvements, please feel free to submit a pull request.
-
-<br />
-
-**License**
-
-This project is licensed under the MIT License. Please review the LICENSE file for more details.
-
-<br />
-
-**Contact**
-
-📧 Email: gopiashokankiot@gmail.com 
-
-🌐 LinkedIn: [linkedin.com/in/gopiashokan](https://www.linkedin.com/in/gopiashokan)
-
-For any further questions or inquiries, feel free to reach out. We are happy to assist you with any queries.
-
+For inquiries or suggestions, please contact via [GitHub](https://github.com/akramsu).
