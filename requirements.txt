@@ -1,0 +1,13 @@
+streamlit
+streamlit-option-menu
+streamlit-extras
+python-dotenv
+PyPDF2
+langchain
+langchain-google-genai
+google-generativeai
+faiss-cpu
+selenium
+pandas
+numpy
+python-docx
