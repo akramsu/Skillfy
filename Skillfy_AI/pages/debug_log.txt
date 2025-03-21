@@ -1,0 +1,74 @@
+2025-03-20 21:20:25: Form submitted. Processing data...
+2025-03-20 21:20:25: POST data: Array
+(
+    [template] => executive
+    [fullName] => Ahmed Alghaili
+    [jobTitle] => 
+    [email] => Ahmedalghili74@gmail.com
+    [phone] => 082134908249
+    [location] => yogyakarta, Indonesia
+    [website] => 
+    [bio] => i am an informatics studnet wants to work in devops and interested in ai and stuff like that
+    [linkedin] => 
+    [github] => 
+    [skills] => Array
+        (
+            [0] => Array
+                (
+                    [name] => 
+                    [level] => Beginner
+                )
+
+        )
+
+    [experience] => Array
+        (
+            [0] => Array
+                (
+                    [title] => 
+                    [company] => 
+                    [startDate] => 
+                    [endDate] => 
+                    [description] => 
+                )
+
+        )
+
+    [education] => Array
+        (
+            [0] => Array
+                (
+                    [degree] => 
+                    [school] => 
+                    [startDate] => 
+                    [endDate] => 
+                    [description] => 
+                )
+
+        )
+
+    [projects] => Array
+        (
+            [0] => Array
+                (
+                    [title] => 
+                    [url] => 
+                    [description] => 
+                    [technologies] => 
+                )
+
+        )
+
+    [download] => 1
+)
+
+2025-03-20 21:20:25: FILES data: Array
+(
+)
+
+2025-03-20 21:20:25: Processing profile image
+2025-03-20 21:20:25: No valid profile image file found
+2025-03-20 21:20:25: Generating portfolio with template: executive
+2025-03-20 21:20:25: Profile image path: 
+2025-03-20 21:20:25: Portfolio HTML saved to: downloads/portfolio_67dc788961b61.html
+2025-03-20 21:20:25: Download requested. Redirecting to download-portfolio.php
