@@ -1,14 +1,19 @@
-# AI Resume Analyzer and LinkedIn Scraper using Generative AI
+#  Skillfy AI 
 
-A comprehensive AI-powered platform that combines resume analysis, LinkedIn profile scraping, and career development tools using Generative AI.
+An innovative platform powered by generative AI, designed to help users develop their personal and professional skills while enhancing their career opportunities. The application offers a comprehensive suite of integrated services:
 
-## Features
 
-- **Resume Analysis**: AI-powered resume evaluation and feedback
-- **CV Builder**: Create professional resumes with AI assistance
-- **LinkedIn Scraper**: Extract and analyze LinkedIn profile data
-- **Interview Questions**: Generate tailored interview questions based on job descriptions
+- **Resume Analysis**: Comprehensive evaluation of resumes with strengths and weaknesses identification
+- **Job Title Suggestions**: Identifying the most suitable job titles based on skills and experience
 - **Course Recommendations**: Get personalized course recommendations based on your skills and career goals
+- **Learning Recommendations**: Suggesting customized courses and educational resources to develop required skills
+- **Professional Resume Creation**: Assistance in creating outstanding resumes
+- **Personal Website Creation**: Designing and building a professional personal website to showcase skills and achievements
+- **Job Opportunity Exploration**: Collecting and displaying suitable job opportunities from LinkedIn
+- **Interview Preparation**: Generating expected interview questions and ideal answers
+
+All of this is done in a personalized and user-friendly manner, helping users achieve their career goals more efficiently.
+
 
 ## Tech Stack
 
@@ -22,17 +27,22 @@ A comprehensive AI-powered platform that combines resume analysis, LinkedIn prof
 ## Prerequisites
 
 - Python 3.8+
+- Streamlit
 - XAMPP (for hosting the main website)
 - Chrome/Chromium browser (for Selenium)
-- Google Gemini API key
+- Google Generative AI (Gemini)
+- FAISS (Facebook AI Similarity Search)
+- LangChain
+- PyPDF2
+- Selenium
 
 ## Installation
 
 1. **Clone the repository**
 
 ```bash
-git clone https://github.com/gopiashokan/AI-Resume-Analyzer-and-LinkedIn-Scraper-using-Generative-AI.git
-cd AI-Resume-Analyzer-and-LinkedIn-Scraper-using-Generative-AI
+git clone [https://github.com/gopiashokan/AI-Resume-Analyzer-and-LinkedIn-Scraper-using-Generative-AI](https://github.com/akramsu/Skillfy_AI.git
+cd Skillfy_AI
 ```
 
 2. **Set up XAMPP**
