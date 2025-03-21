@@ -1,0 +1,329 @@
+        /* Additional styles specific to the LinkedIn Jobs page */
+        .linkedin-jobs-section {
+            padding: 60px 0;
+            background-color: #f8f9fa;
+        }
+        
+        .linkedin-jobs-card {
+            display: flex;
+            flex-direction: column;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .linkedin-jobs-content {
+            padding: 40px;
+        }
+        
+        .linkedin-jobs-title {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .linkedin-jobs-description {
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .features-list {
+            margin: 30px 0;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .feature-icon-small {
+            width: 24px;
+            height: 24px;
+            margin-right: 15px;
+            color: #0077b5;
+        }
+        
+        .feature-text {
+            font-size: 16px;
+            color: #555;
+        }
+        
+        .streamlit-embed {
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        
+        .hero {
+            background-color: #202224;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+        
+        .hero-title {
+            font-size: 36px;
+            margin: 0;
+        }
+        
+        .search-btn {
+            background-color: #0077b5; /* LinkedIn blue */
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .search-btn:hover {
+            background-color: #006097;
+            transform: translateY(-2px);
+        }
+        
+        .job-search-form {
+            margin-top: 30px;
+            background-color: #f8f9fa;
+            padding: 25px;
+            border-radius: 8px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        .job-results {
+            margin-top: 20px;
+            width: 100%;
+        }
+        
+        .job-card {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .job-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .job-title {
+            font-size: 18px;
+            color: #0077b5;
+            margin-bottom: 8px;
+        }
+        
+        .job-company {
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        
+        .job-location {
+            color: #666;
+            margin-bottom: 12px;
+        }
+        
+        .job-description {
+            color: #555;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .job-link {
+            display: inline-block;
+            color: #0077b5;
+            font-weight: 500;
+            text-decoration: none;
+        }
+        
+        .job-link:hover {
+            text-decoration: underline;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .pagination-button {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            color: #0077b5;
+            padding: 8px 12px;
+            margin: 0 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .pagination-button:hover {
+            background-color: #f0f2f5;
+        }
+        
+        .pagination-button.active {
+            background-color: #0077b5;
+            color: #fff;
+            border-color: #0077b5;
+        }
+        
+        .pagination-button.disabled {
+            color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .results-title {
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+        
+        /* Job Details Modal Styles */
+        .job-details-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        
+        .modal-content {
+            background-color: #fff;
+            margin: 50px auto;
+            padding: 30px;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            position: relative;
+            direction: rtl;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            color: #666;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: #0077b5;
+        }
+        
+        .job-details-header {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
+        }
+        
+        .job-details-title {
+            font-size: 24px;
+            color: #0077b5;
+            margin-bottom: 10px;
+        }
+        
+        .job-details-company {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        
+        .job-details-location {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .job-details-section {
+            margin-bottom: 25px;
+        }
+        
+        .job-details-section h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .job-details-description {
+            line-height: 1.6;
+            color: #444;
+        }
+        
+        .job-requirements-list {
+            padding-right: 20px;
+        }
+        
+        .job-requirements-list li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        .apply-button {
+            background-color: #0077b5;
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .apply-button:hover {
+            background-color: #005fa3;
+        }
+        
+        @media (max-width: 768px) {
+            .linkedin-jobs-card {
+                flex-direction: column;
+            }
+            
+            .linkedin-jobs-image {
+                min-height: 200px;
+            }
+        }
+    
