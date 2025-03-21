@@ -6,13 +6,21 @@ import streamlit as st
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import NoSuchElementException, TimeoutException, WebDriverException
 from streamlit_extras.add_vertical_space import add_vertical_space
 from resume_analyzer.resume_analyzer import ResumeAnalyzer
+from typing import List, Dict, Optional
 
 class LinkedInScraper:
-    @staticmethod
-    def webdriver_setup():
+    def __init__(self):
+        self.driver = None
+        self.base_url = "https://www.linkedin.com/jobs/search"
+        self.jobs_data = []
+
+    def webdriver_setup(self):
+        """Set up the Chrome WebDriver with optimized settings"""
         options = webdriver.ChromeOptions()
         options.add_argument('--headless')
         options.add_argument('--no-sandbox')
@@ -23,13 +31,222 @@ class LinkedInScraper:
         options.add_argument('--disable-infobars')
         options.add_argument('--disable-notifications')
         options.add_argument('--blink-settings=imagesEnabled=false')  # Disable images
-        options.add_argument('--disable-javascript')  # Disable JavaScript where possible
         options.add_argument('--incognito')  # Use incognito mode to avoid caching issues
+        
+        # Add user agent to avoid detection
+        options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
 
-        driver = webdriver.Chrome(options=options)
-        driver.set_page_load_timeout(30)  # Set timeout to avoid hanging
-        driver.maximize_window()
-        return driver
+        try:
+            self.driver = webdriver.Chrome(options=options)
+            self.driver.set_page_load_timeout(30)  # Set timeout to avoid hanging
+            self.driver.maximize_window()
+            return True
+        except WebDriverException as e:
+            st.error(f"Failed to initialize WebDriver: {str(e)}")
+            return False
+
+    def close_driver(self):
+        """Safely close the WebDriver"""
+        if self.driver:
+            try:
+                self.driver.quit()
+            except Exception:
+                pass
+            self.driver = None
+
+    def search_jobs(self, job_title: str, location: Optional[str] = None, job_type: Optional[str] = None, 
+                   experience_level: Optional[str] = None) -> List[Dict]:
+        """
+        Search for jobs on LinkedIn based on given criteria
+        """
+        if not self.driver and not self.webdriver_setup():
+            return []
+
+        try:
+            # Construct the search URL
+            search_url = f"{self.base_url}/?keywords={job_title.replace(' ', '%20')}"
+            if location:
+                search_url += f"&location={location.replace(' ', '%20')}"
+            
+            # Add filters for job type and experience level if provided
+            if job_type or experience_level:
+                search_url += "&f_WT=2" if job_type == "Remote" else ""
+                
+                if experience_level == "Entry level":
+                    search_url += "&f_E=1"
+                elif experience_level == "Mid-Senior level":
+                    search_url += "&f_E=2,3"
+                elif experience_level == "Senior level":
+                    search_url += "&f_E=4,5,6"
+            
+            # Navigate to the search URL
+            self.driver.get(search_url)
+            
+            # Wait for the job listings to load
+            try:
+                WebDriverWait(self.driver, 10).until(
+                    EC.presence_of_element_located((By.CSS_SELECTOR, ".jobs-search__results-list"))
+                )
+            except TimeoutException:
+                st.warning("Timeout waiting for job listings to load. LinkedIn might be rate-limiting requests.")
+                return []
+            
+            # Extract job listings
+            job_listings = self.driver.find_elements(By.CSS_SELECTOR, ".jobs-search__results-list li")
+            
+            # If no jobs found, return empty list
+            if not job_listings:
+                return []
+            
+            # Process each job listing
+            jobs_data = []
+            for job in job_listings[:10]:  # Limit to first 10 jobs to avoid long processing times
+                try:
+                    # Extract job details
+                    title_element = job.find_element(By.CSS_SELECTOR, "h3.base-search-card__title")
+                    company_element = job.find_element(By.CSS_SELECTOR, "h4.base-search-card__subtitle")
+                    location_element = job.find_element(By.CSS_SELECTOR, "span.job-search-card__location")
+                    link_element = job.find_element(By.CSS_SELECTOR, "a.base-card__full-link")
+                    
+                    job_url = link_element.get_attribute("href")
+                    
+                    # Get detailed job info
+                    job_details = self.get_job_details(job_url)
+                    
+                    # Create job data dictionary
+                    job_data = {
+                        "title": title_element.text.strip(),
+                        "company": company_element.text.strip(),
+                        "location": location_element.text.strip(),
+                        "url": job_url,
+                        "description": job_details.get("description", "No description available"),
+                        "job_type": job_details.get("job_type", job_type if job_type else "Not specified"),
+                        "experience_level": job_details.get("experience_level", experience_level if experience_level else "Not specified"),
+                        "requirements": job_details.get("requirements", []),
+                        "benefits": job_details.get("benefits", [])
+                    }
+                    
+                    jobs_data.append(job_data)
+                except NoSuchElementException:
+                    continue
+                except Exception as e:
+                    st.error(f"Error processing job listing: {str(e)}")
+                    continue
+            
+            return jobs_data
+            
+        except Exception as e:
+            st.error(f"Error during job search: {str(e)}")
+            return []
+        finally:
+            self.close_driver()
+
+    def get_job_details(self, job_url: str) -> Dict:
+        """
+        Get detailed information about a specific job
+        """
+        try:
+            # Open a new tab for job details
+            self.driver.execute_script("window.open('');")
+            self.driver.switch_to.window(self.driver.window_handles[1])
+            self.driver.get(job_url)
+            
+            # Wait for job details to load
+            try:
+                WebDriverWait(self.driver, 10).until(
+                    EC.presence_of_element_located((By.CSS_SELECTOR, ".jobs-description__content"))
+                )
+            except TimeoutException:
+                # Close tab and switch back
+                self.driver.close()
+                self.driver.switch_to.window(self.driver.window_handles[0])
+                return {}
+            
+            # Extract job description
+            description = ""
+            try:
+                description_element = self.driver.find_element(By.CSS_SELECTOR, ".jobs-description__content")
+                description = description_element.text.strip()
+            except NoSuchElementException:
+                description = "No description available"
+            
+            # Extract job type
+            job_type = "Not specified"
+            try:
+                job_details = self.driver.find_elements(By.CSS_SELECTOR, ".jobs-unified-top-card__job-insight")
+                for detail in job_details:
+                    if "Employment type" in detail.text:
+                        job_type = detail.text.replace("Employment type", "").strip()
+                        break
+            except NoSuchElementException:
+                pass
+            
+            # Extract requirements and benefits from description
+            requirements = []
+            benefits = []
+            
+            description_lines = description.split('\n')
+            in_requirements_section = False
+            in_benefits_section = False
+            
+            for line in description_lines:
+                line = line.strip()
+                if not line:
+                    continue
+                
+                if "requirements" in line.lower() or "qualifications" in line.lower():
+                    in_requirements_section = True
+                    in_benefits_section = False
+                    continue
+                
+                if "benefits" in line.lower() or "perks" in line.lower() or "offer" in line.lower():
+                    in_benefits_section = True
+                    in_requirements_section = False
+                    continue
+                
+                if in_requirements_section and line.startswith("•"):
+                    requirements.append(line.replace("•", "").strip())
+                
+                if in_benefits_section and line.startswith("•"):
+                    benefits.append(line.replace("•", "").strip())
+            
+            # If no requirements or benefits were found, try to extract them using AI
+            if not requirements or not benefits:
+                # This would be a good place to use AI to extract requirements and benefits
+                # For now, we'll just provide some generic ones
+                if not requirements:
+                    requirements = [
+                        "Experience in the relevant field",
+                        "Communication skills",
+                        "Problem-solving abilities"
+                    ]
+                
+                if not benefits:
+                    benefits = [
+                        "Competitive salary",
+                        "Professional development opportunities",
+                        "Work-life balance"
+                    ]
+            
+            # Close tab and switch back
+            self.driver.close()
+            self.driver.switch_to.window(self.driver.window_handles[0])
+            
+            return {
+                "description": description,
+                "job_type": job_type,
+                "requirements": requirements,
+                "benefits": benefits
+            }
+            
+        except Exception as e:
+            # Make sure to close the tab and switch back in case of error
+            try:
+                self.driver.close()
+                self.driver.switch_to.window(self.driver.window_handles[0])
+            except:
+                pass
+            return {}
 
     @staticmethod
     def get_userinput():
@@ -100,229 +317,6 @@ class LinkedInScraper:
         '''
 
     @staticmethod
-    def build_url(job_title, job_location):
-        b = []
-        for i in job_title:
-            x = i.split()
-            y = '%20'.join(x)
-            b.append(y)
-
-        job_title = '%2C%20'.join(b)
-        link = f"https://in.linkedin.com/jobs/search?keywords={job_title}&location={job_location}&locationId=&geoId=102713980&f_TPR=r604800&position=1&pageNum=0"
-        return link
-
-    @staticmethod
-    def open_link(driver, link):
-        # Set a maximum number of retries to avoid infinite loops
-        max_retries = 3
-        retries = 0
-        
-        while retries < max_retries:
-            try:
-                driver.get(link)
-                # Reduced wait time
-                driver.implicitly_wait(3)
-                time.sleep(1)  # Reduced sleep time
-                driver.find_element(by=By.CSS_SELECTOR, value='span.switcher-tabs__placeholder-text.m-auto')
-                return True
-            
-            except NoSuchElementException:
-                retries += 1
-                if retries >= max_retries:
-                    st.warning(f"Failed to load page after {max_retries} attempts. Continuing with limited functionality.")
-                    return False
-                continue
-
-    @staticmethod
-    def link_open_scrolldown(driver, link, job_count):
-        # Open the Link in LinkedIn
-        success = LinkedInScraper.open_link(driver, link)
-        if not success:
-            return
-            
-        # Calculate scroll iterations based on job count
-        # More jobs require more scrolling, but we can optimize
-        scroll_iterations = min(job_count * 2, 10)  # Cap at 10 to avoid excessive scrolling
-        
-        # Scroll Down the Page more efficiently
-        for i in range(scroll_iterations):
-            # Dismiss sign-in modal if present
-            try:
-                driver.find_element(by=By.CSS_SELECTOR, 
-                                value="button[data-tracking-control-name='public_jobs_contextual-sign-in-modal_modal_dismiss']>icon>svg").click()
-            except:
-                pass
-
-            # Scroll down in larger increments
-            driver.execute_script(f"window.scrollBy(0, {1000});")
-            
-            # Click on See More Jobs Button if Present, but don't wait too long
-            try:
-                driver.find_element(by=By.CSS_SELECTOR, value="button[aria-label='See more jobs']").click()
-                driver.implicitly_wait(2)  # Reduced wait time
-            except:
-                pass
-            
-            # Short pause between scrolls
-            time.sleep(0.5)  # Reduced sleep time
-
-    @staticmethod
-    def job_title_filter(scrap_job_title, user_job_title_input):
-        # User Job Title Convert into Lower Case
-        user_input = [i.lower().strip() for i in user_job_title_input]
-
-        # scraped Job Title Convert into Lower Case
-        scrap_title = scrap_job_title.lower().strip()
-
-        # Verify Any User Job Title in the scraped Job Title
-        for i in user_input:
-            # Check if all words in the user input are in the scraped title
-            if all(word in scrap_title for word in i.split()):
-                return scrap_job_title
-                
-        return np.nan
-
-    @staticmethod
-    def scrap_company_data(driver, job_title_input, job_location):
-        try:
-            # Get all job cards at once
-            job_cards = driver.find_elements(by=By.CSS_SELECTOR, value='.base-card')
-            
-            company_names = []
-            job_titles = []
-            locations = []
-            urls = []
-            
-            # Process each job card
-            for card in job_cards:
-                try:
-                    # Extract data from each card
-                    company_name = card.find_element(by=By.CSS_SELECTOR, value='.base-search-card__subtitle').text
-                    job_title = card.find_element(by=By.CSS_SELECTOR, value='.base-search-card__title').text
-                    location = card.find_element(by=By.CSS_SELECTOR, value='.job-search-card__location').text
-                    url = card.find_element(by=By.CSS_SELECTOR, value='a').get_attribute('href')
-                    
-                    company_names.append(company_name)
-                    job_titles.append(job_title)
-                    locations.append(location)
-                    urls.append(url)
-                except:
-                    # Skip cards with missing data
-                    continue
-            
-            # Create DataFrame
-            df = pd.DataFrame({
-                'Company Name': company_names,
-                'Job Title': job_titles,
-                'Location': locations,
-                'Website URL': urls
-            })
-            
-            # Apply filters more efficiently
-            # Filter job titles
-            df['Job Title'] = df['Job Title'].apply(lambda x: LinkedInScraper.job_title_filter(x, job_title_input))
-            
-            # Filter locations
-            job_location_lower = job_location.lower()
-            df['Location'] = df['Location'].apply(lambda x: x if job_location_lower in x.lower() else np.nan)
-            
-            # Drop rows with NaN values and reset index
-            df = df.dropna()
-            df.reset_index(drop=True, inplace=True)
-            
-            return df
-            
-        except Exception as e:
-            st.error(f"Error scraping job data: {e}")
-            return pd.DataFrame(columns=['Company Name', 'Job Title', 'Location', 'Website URL'])
-
-    @staticmethod
-    def scrap_job_description(driver, df, job_count):
-        if df.empty:
-            return df
-            
-        # Get URL into List
-        website_url = df['Website URL'].tolist()
-        
-        # Limit to requested job count
-        website_url = website_url[:job_count]
-        
-        # Create progress bar
-        progress_bar = st.progress(0)
-        status_text = st.empty()
-        
-        # Initialize lists for new columns
-        job_description = []
-        job_type = []
-        experience_level = []
-        job_function = []
-        industries = []
-        
-        # Scrap Job Description
-        for i, url in enumerate(website_url):
-            try:
-                # Update progress
-                progress = int((i + 1) * 100 / len(website_url))
-                progress_bar.progress(progress)
-                status_text.text(f"Processing job {i + 1} of {len(website_url)}")
-                
-                # Open Job URL
-                driver.get(url)
-                time.sleep(1)
-                
-                try:
-                    description = driver.find_element(by=By.CLASS_NAME, value='description__text').text
-                    job_description.append(description)
-                except:
-                    job_description.append('Not Found')
-                
-                try:
-                    type_text = driver.find_element(by=By.CLASS_NAME, value='description__job-criteria-text').text
-                    job_type.append(type_text)
-                except:
-                    job_type.append('Not Found')
-                
-                try:
-                    experience = driver.find_element(by=By.XPATH, value="//span[contains(@class, 'description__job-criteria-text')][2]").text
-                    experience_level.append(experience)
-                except:
-                    experience_level.append('Not Found')
-                
-                try:
-                    function = driver.find_element(by=By.XPATH, value="//span[contains(@class, 'description__job-criteria-text')][3]").text
-                    job_function.append(function)
-                except:
-                    job_function.append('Not Found')
-                
-                try:
-                    industry = driver.find_element(by=By.XPATH, value="//span[contains(@class, 'description__job-criteria-text')][4]").text
-                    industries.append(industry)
-                except:
-                    industries.append('Not Found')
-                    
-            except Exception as e:
-                print(f"Error processing URL {url}: {str(e)}")
-                job_description.append('Error')
-                job_type.append('Error')
-                experience_level.append('Error')
-                job_function.append('Error')
-                industries.append('Error')
-        
-        # Clear progress bar and status text
-        progress_bar.empty()
-        status_text.empty()
-        
-        # Add new columns to DataFrame
-        df_subset = df.iloc[:len(website_url)].copy()
-        df_subset['Job Description'] = job_description
-        df_subset['Job Type'] = job_type
-        df_subset['Experience Level'] = experience_level
-        df_subset['Job Function'] = job_function
-        df_subset['Industries'] = industries
-        
-        return df_subset
-
-    @staticmethod
     def display_data_userinterface(df_final):
         if df_final.empty:
             st.error("No jobs found matching your criteria. Please try different search terms.")
@@ -353,20 +347,15 @@ class LinkedInScraper:
             if job_titles[0] != '' and location != '' and count > 0:
                 try:
                     with st.spinner('Searching jobs...'):
-                        driver = LinkedInScraper.webdriver_setup()
+                        scraper = LinkedInScraper()
+                        jobs_data = scraper.search_jobs(job_title=job_titles[0], location=location)
                         
-                        url = LinkedInScraper.build_url(job_titles, location)
-                        LinkedInScraper.link_open_scrolldown(driver, url, count)
-                        
-                        df = LinkedInScraper.scrap_company_data(driver, job_titles, location)
-                        if not df.empty:
-                            df_final = LinkedInScraper.scrap_job_description(driver, df, count)
-                            LinkedInScraper.display_data_userinterface(df_final)
+                        if jobs_data:
+                            df = pd.DataFrame(jobs_data)
+                            LinkedInScraper.display_data_userinterface(df)
                         else:
                             st.error("No matching jobs found. Please try different search terms.")
                             
-                        driver.quit()
-                        
                 except Exception as e:
                     st.error(f"An error occurred: {str(e)}")
                     
@@ -399,19 +388,15 @@ class LinkedInScraper:
                         st.info(f"Based on your resume, searching for the following positions: {', '.join(job_titles)}")
                         
                         # Search for jobs
-                        driver = LinkedInScraper.webdriver_setup()
-                        url = LinkedInScraper.build_url(job_titles, location)
-                        LinkedInScraper.link_open_scrolldown(driver, url, count)
+                        scraper = LinkedInScraper()
+                        jobs_data = scraper.search_jobs(job_title=job_titles[0], location=location)
                         
-                        df = LinkedInScraper.scrap_company_data(driver, job_titles, location)
-                        if not df.empty:
-                            df_final = LinkedInScraper.scrap_job_description(driver, df, count)
-                            LinkedInScraper.display_data_userinterface(df_final)
+                        if jobs_data:
+                            df = pd.DataFrame(jobs_data)
+                            LinkedInScraper.display_data_userinterface(df)
                         else:
                             st.error("No matching jobs found. Please try uploading a different resume or searching in a different location.")
                             
-                        driver.quit()
-                        
                 except Exception as e:
                     st.error(f"An error occurred: {str(e)}")
             
@@ -421,3 +406,6 @@ class LinkedInScraper:
                 st.markdown(f'<h5 style="text-align: center;color: orange;">Please Enter Job Location</h5>', unsafe_allow_html=True)
             elif count == 0:
                 st.markdown(f'<h5 style="text-align: center;color: orange;">Please Enter Number of Jobs Greater Than 0</h5>', unsafe_allow_html=True)
+
+if __name__ == "__main__":
+    LinkedInScraper.main()
