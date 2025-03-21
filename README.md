@@ -1,7 +1,8 @@
 #  Skillfy AI 
 
-An innovative platform powered by generative AI, designed to help users develop their personal and professional skills while enhancing their career opportunities. The application offers a comprehensive suite of integrated services:
+An innovative platform powered by generative AI, designed to help users develop their personal and professional skills while enhancing their career opportunities.
 
+ The application offers a comprehensive suite of integrated services:
 
 - **Resume Analysis**: Comprehensive evaluation of resumes with strengths and weaknesses identification
 - **Job Title Suggestions**: Identifying the most suitable job titles based on skills and experience
